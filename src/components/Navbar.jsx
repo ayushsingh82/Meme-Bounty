@@ -1,5 +1,43 @@
 import React from 'react'
-// import { ConnectButton } from '@rainbow-me/rainbowkit';
+
+
+const initSignin = async () => {
+  // setLoading(true);
+  try {
+    // const signature: String = await signMessage(address+":loggin_in_to_session");
+    if (window.tronLink === undefined) {
+      console.log("TronLink not found");
+      return;
+    }
+    if (!window.tronLink.ready) {
+      window.tronLink.request({ method: "tron_requestAccounts" });
+      return;
+    }
+    // const message =
+    //   window.tronLink.tronWeb.defaultAddress?.base58 +
+    //   ":logging_in_to_session";
+    // const signature = await window.tronLink.tronWeb.trx.signMessageV2(
+    //   message
+    // );
+    // console.log("signature:", signature);
+    // const res = await signIn("tronAuth", {
+    //   message,
+    //   signature,
+    //   redirect: false
+    // });
+    // console.log("signInres:", res);
+
+    // if (res?.ok) {
+    //   // router.push("/app");
+    // } else {
+    //   console.error("Sign in failed");
+    // }
+  } catch (error) {
+    console.error("Error while signing in:", error);
+  } finally {
+    setLoading(false);
+  }
+};
 
 function Navbar() {
     return (
@@ -17,7 +55,7 @@ function Navbar() {
             </h1>
           </div>
           <div className='text-white'>
-           Connect
+          <button onClick={initSignin}>Connect</button>
           </div>
         </div>
         <hr className='border-t-2 border-red-700' />
