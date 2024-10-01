@@ -1,25 +1,77 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 
 const Form = () => {
   // State to handle form inputs
   const [formData, setFormData] = useState({
-    name: '',
-    contact: '',
-    aiAgent: '',
-    bountyPrize: ''
+    name: "",
+    contact: "",
+    description: "",
+    bountyPrize: "",
   });
 
-  // State to handle loading and error messages
+  const BountyABI = [
+    {
+      anonymous: false,
+      inputs: [
+        { indexed: true, internalType: "address", name: "userAddress", type: "address" },
+        { indexed: false, internalType: "string", name: "name", type: "string" },
+        { indexed: false, internalType: "string", name: "contact", type: "string" },
+        { indexed: false, internalType: "string", name: "description", type: "string" },
+        { indexed: false, internalType: "uint256", name: "prize", type: "uint256" },
+      ],
+      name: "FormSubmitted",
+      type: "event",
+    },
+    {
+      inputs: [{ internalType: "address", name: "_user", type: "address" }],
+      name: "getForm",
+      outputs: [
+        { internalType: "string", name: "", type: "string" },
+        { internalType: "string", name: "", type: "string" },
+        { internalType: "string", name: "", type: "string" },
+        { internalType: "uint256", name: "", type: "uint256" },
+      ],
+      stateMutability: "view",
+      type: "function",
+    },
+    {
+      inputs: [
+        { internalType: "string", name: "_name", type: "string" },
+        { internalType: "string", name: "_contact", type: "string" },
+        { internalType: "string", name: "_description", type: "string" },
+        { internalType: "uint256", name: "_prize", type: "uint256" },
+      ],
+      name: "submitForm",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+  ];
+
+  const [contract, setContract] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  // Fetch contract instance when the component mounts
+  useEffect(() => {
+    const getContract = async () => {
+      const instance = await window.tronLink.tronWeb.contract(
+        BountyABI,
+        "TG92DKfwsf7b2RgBCrwrbEuEomPuKUrAek" // Replace with your actual contract address
+      );
+      setContract(instance);
+    };
+
+    getContract();
+  }, []);
 
   // Function to handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
@@ -27,18 +79,28 @@ const Form = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
+
+    const { name, contact, description, bountyPrize } = formData;
 
     try {
-      // Here, you would typically handle form submission logic, such as sending the form data to a backend server.
-      // For now, we are just logging the form data to the console.
-      console.log('Form Data Submitted:', formData);
+      if (contract) {
+        // Call the contract method with form data
+        const result = await contract.submitForm(name, contact, description, bountyPrize).send({
+          feeLimit: 1000000000,
+          shouldPollResponse: true,
+        });
 
-      setSuccess('Form submitted successfully!');
+        const transactionId = result.txID;
+        console.log("Transaction ID:", transactionId);
+        console.log(`${name}, ${contact}, ${description},${bountyPrize}`)
+
+        setSuccess("Bounty listed successfully! Transaction ID: " + transactionId);
+      }
     } catch (err) {
-      console.error('Error submitting form:', err);
-      setError('Failed to submit the form. Please try again.');
+      console.error("Error submitting form:", err);
+      setError("Failed to submit the form. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -46,14 +108,15 @@ const Form = () => {
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center">
-      <div className="p-6 max-w-md mx-auto bg-gray-800 text-white rounded-md mt-[0px] w-[500px] ">
+      <div className="p-6 max-w-md mx-auto bg-gray-800 text-white rounded-md mt-[0px] w-[500px]">
         <h2 className="text-2xl font-bold mb-4">Meme ART Request </h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
         <form onSubmit={handleSubmit}>
-
           <div className="mb-4">
-            <label htmlFor="name" className="block mb-2">Name:</label>
+            <label htmlFor="name" className="block mb-2">
+              Name:
+            </label>
             <input
               type="text"
               id="name"
@@ -66,7 +129,9 @@ const Form = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="contact" className="block mb-2">Contact:</label>
+            <label htmlFor="contact" className="block mb-2">
+              Contact:
+            </label>
             <input
               type="text"
               id="contact"
@@ -79,12 +144,14 @@ const Form = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="aiAgent" className="block mb-2">AI Agent Needed:</label>
+            <label htmlFor="description" className="block mb-2">
+              AI Agent Needed:
+            </label>
             <input
               type="text"
-              id="aiAgent"
-              name="aiAgent"
-              value={formData.aiAgent}
+              id="description"
+              name="description"
+              value={formData.description}
               onChange={handleChange}
               className="w-full px-3 py-2 bg-gray-900 border border-red-700 rounded-md"
               required
@@ -92,7 +159,9 @@ const Form = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="bountyPrize" className="block mb-2">Bounty Prize:</label>
+            <label htmlFor="bountyPrize" className="block mb-2">
+              Bounty Prize:
+            </label>
             <input
               type="number"
               id="bountyPrize"
@@ -106,10 +175,12 @@ const Form = () => {
 
           <button
             type="submit"
-            className={`px-4 py-2 bg-red-700 hover:bg-slate-900 rounded-md ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`px-4 py-2 bg-red-700 hover:bg-slate-900 rounded-md ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
             disabled={loading}
           >
-            {loading ? 'Submitting...' : 'Submit'}
+            {loading ? "Submitting..." : "Submit"}
           </button>
         </form>
       </div>
