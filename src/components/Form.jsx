@@ -1,4 +1,23 @@
 import React, { useState, useEffect } from "react";
+import { SparklesCore } from "../components/ui/sparkles";
+
+function SparklesPreview() {
+  return (
+    <div className="h-[40rem] relative w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md">
+      <div className="w-full absolute inset-0 h-screen">
+        <SparklesCore
+          id="tsparticlesfullpage"
+          background="transparent"
+          minSize={0.6}
+          maxSize={1.4}
+          particleDensity={100}
+          className="w-full h-full"
+          particleColor="#FFFFFF"
+        />
+      </div>
+    </div>
+  );
+}
 
 const Form = () => {
   // State to handle form inputs
@@ -94,7 +113,7 @@ const Form = () => {
 
         const transactionId = result.txID;
         console.log("Transaction ID:", transactionId);
-        console.log(`${name}, ${contact}, ${description},${bountyPrize}`)
+        console.log(`${name}, ${contact}, ${description}, ${bountyPrize}`);
 
         setSuccess("Bounty listed successfully! Transaction ID: " + transactionId);
       }
@@ -107,82 +126,95 @@ const Form = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center">
-      <div className="p-6 max-w-md mx-auto bg-gray-800 text-white rounded-md mt-[0px] w-[500px]">
-        <h2 className="text-2xl font-bold mb-4">Meme ART Request </h2>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        {success && <p className="text-green-500 mb-4">{success}</p>}
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="name" className="block mb-2">
-              Name:
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full px-3 py-2 bg-gray-900 border border-red-700 rounded-md"
-              required
-            />
-          </div>
+    <div className="min-h-screen relative w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md">
+      <div className="w-full absolute inset-0 h-screen">
+        <SparklesCore
+          id="tsparticlesfullpage"
+          background="transparent"
+          minSize={0.6}
+          maxSize={1.4}
+          particleDensity={100}
+          className="w-full h-full"
+          particleColor="#FFFFFF"
+        />
+      </div>
+      <div className="relative z-10 min-h-screen bg-black flex items-center justify-center">
+        <div className="p-6 max-w-md mx-auto bg-gray-800 text-white rounded-md mt-[0px] w-[500px]">
+          <h2 className="text-2xl font-bold mb-4">Meme ART Request</h2>
+          {error && <p className="text-red-500 mb-4">{error}</p>}
+          {success && <p className="text-green-500 mb-4">{success}</p>}
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label htmlFor="name" className="block mb-2">
+                Name:
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-black border border-red-700 rounded-md"
+                required
+              />
+            </div>
 
-          <div className="mb-4">
-            <label htmlFor="contact" className="block mb-2">
-              Contact:
-            </label>
-            <input
-              type="text"
-              id="contact"
-              name="contact"
-              value={formData.contact}
-              onChange={handleChange}
-              className="w-full px-3 py-2 bg-gray-900 border border-red-700 rounded-md"
-              required
-            />
-          </div>
+            <div className="mb-4">
+              <label htmlFor="contact" className="block mb-2">
+                Contact:
+              </label>
+              <input
+                type="text"
+                id="contact"
+                name="contact"
+                value={formData.contact}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-black border border-red-700 rounded-md"
+                required
+              />
+            </div>
 
-          <div className="mb-4">
-            <label htmlFor="description" className="block mb-2">
-              AI Agent Needed:
-            </label>
-            <input
-              type="text"
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              className="w-full px-3 py-2 bg-gray-900 border border-red-700 rounded-md"
-              required
-            />
-          </div>
+            <div className="mb-4">
+              <label htmlFor="description" className="block mb-2">
+                AI Agent Needed:
+              </label>
+              <input
+                type="text"
+                id="description"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-black border border-red-700 rounded-md"
+                required
+              />
+            </div>
 
-          <div className="mb-4">
-            <label htmlFor="bountyPrize" className="block mb-2">
-              Bounty Prize:
-            </label>
-            <input
-              type="number"
-              id="bountyPrize"
-              name="bountyPrize"
-              value={formData.bountyPrize}
-              onChange={handleChange}
-              className="w-full px-3 py-2 bg-gray-900 border border-red-700 rounded-md"
-              required
-            />
-          </div>
+            <div className="mb-4">
+              <label htmlFor="bountyPrize" className="block mb-2">
+                Bounty Prize:
+              </label>
+              <input
+                type="number"
+                id="bountyPrize"
+                name="bountyPrize"
+                value={formData.bountyPrize}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-black border border-red-700 rounded-md"
+                required
+              />
+            </div>
 
-          <button
-            type="submit"
-            className={`px-4 py-2 bg-red-700 hover:bg-slate-900 rounded-md ${
-              loading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            disabled={loading}
-          >
-            {loading ? "Submitting..." : "Submit"}
-          </button>
-        </form>
+            <button
+              type="submit"
+              className={`px-4 py-2 bg-red-700 hover:bg-slate-900 rounded-md ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={loading}
+            >
+              {loading ? "Submitting..." : "Submit"}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
