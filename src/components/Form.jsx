@@ -29,42 +29,194 @@ const Form = () => {
 
   const BountyABI = [
     {
-      anonymous: false,
-      inputs: [
-        { indexed: true, internalType: "address", name: "userAddress", type: "address" },
-        { indexed: false, internalType: "string", name: "name", type: "string" },
-        { indexed: false, internalType: "string", name: "contact", type: "string" },
-        { indexed: false, internalType: "string", name: "description", type: "string" },
-        { indexed: false, internalType: "uint256", name: "prize", type: "uint256" },
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "userAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "contact",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "prize",
+          "type": "uint256"
+        }
       ],
-      name: "FormSubmitted",
-      type: "event",
+      "name": "FormSubmitted",
+      "type": "event"
     },
     {
-      inputs: [{ internalType: "address", name: "_user", type: "address" }],
-      name: "getForm",
-      outputs: [
-        { internalType: "string", name: "", type: "string" },
-        { internalType: "string", name: "", type: "string" },
-        { internalType: "string", name: "", type: "string" },
-        { internalType: "uint256", name: "", type: "uint256" },
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
       ],
-      stateMutability: "view",
-      type: "function",
+      "name": "allSubmissions",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "contact",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "prize",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "submitter",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
     },
     {
-      inputs: [
-        { internalType: "string", name: "_name", type: "string" },
-        { internalType: "string", name: "_contact", type: "string" },
-        { internalType: "string", name: "_description", type: "string" },
-        { internalType: "uint256", name: "_prize", type: "uint256" },
+      "inputs": [],
+      "name": "getAllSubmissions",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "contact",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "prize",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "submitter",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct UserForm.User[]",
+          "name": "",
+          "type": "tuple[]"
+        }
       ],
-      name: "submitForm",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
+      "stateMutability": "view",
+      "type": "function"
     },
-  ];
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_contact",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_description",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_prize",
+          "type": "uint256"
+        }
+      ],
+      "name": "submitForm",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "submittedForms",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "contact",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "prize",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "submitter",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ] 
 
   const [contract, setContract] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -77,7 +229,7 @@ const Form = () => {
         if (window.tronLink && window.tronLink.tronWeb) {
           const instance = await window.tronLink.tronWeb.contract(
             BountyABI,
-            "TG92DKfwsf7b2RgBCrwrbEuEomPuKUrAek" // Smart contract address
+            "TBVxqmxC2Vpym5rJs44cibHzPMnjvgmXWL" // Smart contract address
           );
           setContract(instance);
         } else {
@@ -109,7 +261,7 @@ const Form = () => {
 
     try {
       if (contract) {
-        const prizeInWei = window.tronLink.tronWeb.toSun(bountyPrize); // Convert prize to wei (smallest unit)
+        const prizeInWei = window.tronLink.tronWeb.toSun(bountyPrize); 
         
         // Call the contract method with form data
         const result = await contract
