@@ -39,32 +39,77 @@
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "_user",
-				"type": "address"
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
-		"name": "getForm",
+		"name": "allSubmissions",
 		"outputs": [
 			{
 				"internalType": "string",
-				"name": "",
+				"name": "name",
 				"type": "string"
 			},
 			{
 				"internalType": "string",
-				"name": "",
+				"name": "contact",
 				"type": "string"
 			},
 			{
 				"internalType": "string",
-				"name": "",
+				"name": "description",
 				"type": "string"
 			},
 			{
 				"internalType": "uint256",
-				"name": "",
+				"name": "prize",
 				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "submitter",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getAllSubmissions",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "contact",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "description",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "prize",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "submitter",
+						"type": "address"
+					}
+				],
+				"internalType": "struct UserForm.User[]",
+				"name": "",
+				"type": "tuple[]"
 			}
 		],
 		"stateMutability": "view",
@@ -104,9 +149,14 @@
 				"internalType": "address",
 				"name": "",
 				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
-		"name": "users",
+		"name": "submittedForms",
 		"outputs": [
 			{
 				"internalType": "string",
@@ -127,6 +177,11 @@
 				"internalType": "uint256",
 				"name": "prize",
 				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "submitter",
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",

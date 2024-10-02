@@ -230,85 +230,74 @@ const BountyCard = ({ name, contact, description, prize }) => {
 
 // Main Bounties component
 const Bounties = () => {
-  const [bounties, setBounties] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [bountyData,setBountyData]=useState([]);
-
-  useEffect(() => {
-    const fetchBounties = async () => {
-      try {
-        const contract = await window.tronLink.tronWeb.contract(
-          BountyABI,
-          "TBVxqmxC2Vpym5rJs44cibHzPMnjvgmXWL"
-        );
-        const bountyAddresses = ["address1", "address2"]; 
-
-        const bountyData = await contract.getAllSubmissions().call();
-        console.log(bountyData)
-        setBounties(bountyData);
-       
-        // const fetchedBounties = await Promise.all(
-
-        //   bountyAddresses.map(async () => {
-        //     const bountyData = await contract.getForm().call();
-        //     const [name, contact, description, prize] = bountyData;
-        //     return { name, contact, description, prize };
-        //   })
-        // );
-   
-        // setBounties(fetchedBounties);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching bounties:", error);
-        setIsLoading(false);
-      }
-    };
-
-    fetchBounties();
-  }, []);
-
-  if (isLoading) {
-    return <div className="text-white">Loading bounties...</div>;
-  }
-
-  return (
-    <div className="min-h-screen relative w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md">
-      {/* Particle background */}
-      <div className="w-full absolute inset-0 h-screen z-0">
-        <SparklesCore
-          id="tsparticlesfullpage"
-          background="transparent"
-          minSize={0.6}
-          maxSize={1.4}
-          particleDensity={100}
-          className="w-full h-full"
-          particleColor="#FFFFFF"
-        />
+    const [bounties, setBounties] = useState([]); // This is the state holding your bounty data
+    const [isLoading, setIsLoading] = useState(true);
+  
+    useEffect(() => {
+      const fetchBounties = async () => {
+        try {
+          const contract = await window.tronLink.tronWeb.contract(
+            BountyABI,
+            "TBVxqmxC2Vpym5rJs44cibHzPMnjvgmXWL"
+          );
+  
+          const bountyData = await contract.getAllSubmissions().call();
+          console.log(bountyData);
+  
+          // Set bountyData to state correctly
+          setBounties(bountyData);
+          setIsLoading(false);
+        } catch (error) {
+          console.error("Error fetching bounties:", error);
+          setIsLoading(false);
+        }
+      };
+  
+      fetchBounties();
+    }, []);
+  
+    if (isLoading) {
+      return <div className="text-white">Loading bounties...</div>;
+    }
+  
+    return (
+      <div className="min-h-screen relative w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md">
+        {/* Particle background */}
+        <div className="w-full absolute inset-0 h-screen z-0">
+          <SparklesCore
+            id="tsparticlesfullpage"
+            background="transparent"
+            minSize={0.6}
+            maxSize={1.4}
+            particleDensity={100}
+            className="w-full h-full"
+            particleColor="#FFFFFF"
+          />
+        </div>
+  
+        {/* Typewriter Effect */}
+        <div className="relative z-10 mt-[-170px] text-red-500">
+          <TypewriterEffectSmoothDemo />
+        </div>
+  
+        {/* Bounty Cards Side by Side */}
+        <div className="relative z-10 flex flex-row gap-x-6 justify-center items-center mt-8">
+          {bounties.length > 0 ? (
+            bounties.map((bounty, index) => (
+              <BountyCard
+                key={index}
+                name={bounty.name}
+                contact={bounty.contact}
+                description={bounty.description}
+                // prize={bounty.prize}
+              />
+            ))
+          ) : (
+            <p className="text-white">No bounties available at the moment.</p>
+          )}
+        </div>
       </div>
-
-      {/* Typewriter Effect */}
-      <div className="relative z-10 mt-[-170px] text-red-500">
-        <TypewriterEffectSmoothDemo />
-      </div>
-
-      {/* Bounty Cards Side by Side */}
-      <div className="relative z-10 flex flex-row gap-x-6 justify-center items-center mt-8">
-        {bounties.length > 0 ? (
-            bountyData.map((bounty, index) => (
-            <BountyCard
-              key={index}
-              name={bounty.name}
-              contact={bounty.contact}
-              description={bounty.description}
-              prize={bounty.prize}
-            />
-          ))
-        ) : (
-          <p className="text-white">No bounties available at the moment.</p>
-        )}
-      </div>
-    </div>
-  );
-};
-
-export default Bounties;
+    );
+  };
+  
+  export default Bounties;
