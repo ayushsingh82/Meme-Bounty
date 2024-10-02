@@ -54,7 +54,7 @@ function Navbar() {
               <a href='/form'>Dashboard</a>
             </h1>
             <h1 className='font-medium text-xl text-white'>
-              <a href='/'>Bounties</a>
+              <a href='/bounties'>Bounties</a>
             </h1>
           </div>
 

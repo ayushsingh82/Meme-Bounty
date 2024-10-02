@@ -7,7 +7,7 @@ import { Route } from 'react-router-dom'
 import Home from './components/Home.jsx'
 import Navbar from './components/Navbar.jsx'
 import Form from './components/Form.jsx'
-
+import Bounties from './components/Bounties.jsx'
 
 
 const router = createBrowserRouter(
@@ -15,6 +15,7 @@ const router = createBrowserRouter(
     <Route>
     <Route path='/' element={<Home/>}/>
     <Route path='/form' element={<Form/>}/>
+    <Route path='/bounties' element={<Bounties/>}/>
     </Route>
   )
 )

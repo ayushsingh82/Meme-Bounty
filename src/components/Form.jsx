@@ -20,7 +20,6 @@ function SparklesPreview() {
 }
 
 const Form = () => {
-  // State to handle form inputs
   const [formData, setFormData] = useState({
     name: "",
     contact: "",
@@ -72,20 +71,26 @@ const Form = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Fetch contract instance when the component mounts
   useEffect(() => {
     const getContract = async () => {
-      const instance = await window.tronLink.tronWeb.contract(
-        BountyABI,
-        "TG92DKfwsf7b2RgBCrwrbEuEomPuKUrAek" // Replace with your actual contract address
-      );
-      setContract(instance);
+      try {
+        if (window.tronLink && window.tronLink.tronWeb) {
+          const instance = await window.tronLink.tronWeb.contract(
+            BountyABI,
+            "TG92DKfwsf7b2RgBCrwrbEuEomPuKUrAek" // Smart contract address
+          );
+          setContract(instance);
+        } else {
+          setError("TronLink wallet not detected. Please install TronLink.");
+        }
+      } catch (err) {
+        setError("Failed to connect to the contract. Please check your network.");
+      }
     };
 
     getContract();
   }, []);
 
-  // Function to handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -94,7 +99,6 @@ const Form = () => {
     });
   };
 
-  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -105,17 +109,21 @@ const Form = () => {
 
     try {
       if (contract) {
+        const prizeInWei = window.tronLink.tronWeb.toSun(bountyPrize); // Convert prize to wei (smallest unit)
+        
         // Call the contract method with form data
-        const result = await contract.submitForm(name, contact, description, bountyPrize).send({
-          feeLimit: 1000000000,
-          shouldPollResponse: true,
-        });
+        const result = await contract
+          .submitForm(name, contact, description, prizeInWei)
+          .send({
+            feeLimit: 1000000000, // Specify fee limit
+            shouldPollResponse: true,
+          });
 
         const transactionId = result.txID;
-        console.log("Transaction ID:", transactionId);
-        console.log(`${name}, ${contact}, ${description}, ${bountyPrize}`);
-
-        setSuccess("Bounty listed successfully! Transaction ID: " + transactionId);
+        setSuccess(`Bounty listed successfully! `);
+        console.log(`${name},${contact},${description},${prizeInWei}`)
+      } else {
+        setError("Contract is not available. Please try again later.");
       }
     } catch (err) {
       console.error("Error submitting form:", err);
@@ -176,7 +184,7 @@ const Form = () => {
 
             <div className="mb-4">
               <label htmlFor="description" className="block mb-2">
-                AI Agent Needed:
+                Meme Description:
               </label>
               <input
                 type="text"
@@ -191,7 +199,7 @@ const Form = () => {
 
             <div className="mb-4">
               <label htmlFor="bountyPrize" className="block mb-2">
-                Bounty Prize:
+                Bounty Prize (in TRX):
               </label>
               <input
                 type="number"
