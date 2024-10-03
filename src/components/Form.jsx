@@ -261,11 +261,13 @@ const Form = () => {
 
     try {
       if (contract) {
-        const prizeInWei = window.tronLink.tronWeb.toSun(bountyPrize); 
+        // const prizeInWei = window.tronLink.tronWeb.toSun(bountyPrize); 
+        const prizeInSunHex = window.tronLink.tronWeb.toSun(bountyPrize); // Returns hex
+
         
         // Call the contract method with form data
         const result = await contract
-          .submitForm(name, contact, description, prizeInWei)
+          .submitForm(name, contact, description, bountyPrize)
           .send({
             feeLimit: 1000000000, // Specify fee limit
             shouldPollResponse: true,
@@ -273,7 +275,7 @@ const Form = () => {
 
         const transactionId = result.txID;
         setSuccess(`Bounty listed successfully! `);
-        console.log(`${name},${contact},${description},${prizeInWei}`)
+        console.log(`${name},${contact},${description},${bountyPrize}`)
       } else {
         setError("Contract is not available. Please try again later.");
       }

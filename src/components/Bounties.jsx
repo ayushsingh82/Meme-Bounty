@@ -243,6 +243,10 @@ const Bounties = () => {
   
           const bountyData = await contract.getAllSubmissions().call();
           console.log(bountyData);
+
+        //   const prizeInSun = window.tronLink.tronWeb.toSun(bountyPrize); // Still returns BigNumber
+        //  const prizeInTRX = window.tronLink.tronWeb.fromSun(prizeInSun); // Convert to TRX (string or number)
+
   
           // Set bountyData to state correctly
           setBounties(bountyData);
@@ -289,7 +293,7 @@ const Bounties = () => {
                 name={bounty.name}
                 contact={bounty.contact}
                 description={bounty.description}
-                // prize={bounty.prize}
+                prize={parseInt(bounty.prize._hex,16)}
               />
             ))
           ) : (
