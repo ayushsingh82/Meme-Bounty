@@ -215,17 +215,18 @@ const BountyCard = ({ name, contact, description, prize }) => {
   return (
     <div className="bg-slate-900 text-white border border-4 border-white shadow-md shadow-white rounded-lg p-6 w-full max-w-sm">
     <div className="border border-white p-2 rounded-lg mb-2 bg-red-800">
-      <h3 className="text-lg font-semibold">Name: {name}</h3>
+      <h3 className="text-md font-semibold">Name: {name}</h3>
     </div>
     
     <div className="border border-white p-2 rounded-lg mb-2 bg-red-800">
     <p className="text-sm font-bold">
-      <strong>Contact:</strong>
-      <a href={`mailto: ${contact}`} target="_blank" rel="noopener noreferrer">
-        {contact}
+      Contact:
+      <a href={`mailto:${contact}`} target="_blank" rel="noopener noreferrer">
+        <strong> {contact} </strong>
       </a>
     </p>
   </div>
+  
   
     <div className="border border-white p-2 rounded-lg mb-2 bg-red-800">
       <p className="text-sm">
