@@ -213,18 +213,33 @@ const TypewriterEffectSmoothDemo = () => {
 // BountyCard component to display the bounty details
 const BountyCard = ({ name, contact, description, prize }) => {
   return (
-    <div className="bg-gray-800 text-white border border-2 border-red-500 shadow-md shadow-white rounded-lg p-6 w-full max-w-sm">
-      <h3 className="text-lg font-semibold mb-2">Name: {name}</h3>
-      <p className="text-sm mb-2">
-        <strong>Contact:</strong> {contact}
-      </p>
-      <p className="text-sm mb-2">
+    <div className="bg-slate-900 text-white border border-4 border-white shadow-md shadow-white rounded-lg p-6 w-full max-w-sm">
+    <div className="border border-white p-2 rounded-lg mb-2 bg-red-800">
+      <h3 className="text-lg font-semibold">Name: {name}</h3>
+    </div>
+    
+    <div className="border border-white p-2 rounded-lg mb-2 bg-red-800">
+    <p className="text-sm font-bold">
+      <strong>Contact:</strong>
+      <a href={`mailto: ${contact}`} target="_blank" rel="noopener noreferrer">
+        {contact}
+      </a>
+    </p>
+  </div>
+  
+    <div className="border border-white p-2 rounded-lg mb-2 bg-red-800">
+      <p className="text-sm">
         <strong>Description:</strong> {description}
       </p>
+    </div>
+    
+    <div className="border border-white p-2 rounded-lg bg-red-800">
       <p className="text-md">
         <strong>Bounty Prize:</strong> {prize} TRX
       </p>
     </div>
+  </div>
+  
   );
 };
 
@@ -285,7 +300,7 @@ const Bounties = () => {
         </div>
   
         {/* Bounty Cards Side by Side */}
-        <div className="relative z-10 flex flex-row gap-x-6 justify-center items-center mt-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
           {bounties.length > 0 ? (
             bounties.map((bounty, index) => (
               <BountyCard
